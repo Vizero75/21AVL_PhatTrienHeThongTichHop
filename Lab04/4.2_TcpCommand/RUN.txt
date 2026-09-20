@@ -1,0 +1,8 @@
+Lab 4.2 - TcpCommand
+
+cd C:\Users\Ledin\Downloads\Lab04\4.2_TcpCommand
+javac -encoding UTF-8 -d out src/tcp/TcpCommandServer.java src/tcp/TcpCommandClient.java
+
+Terminal 1: java -cp out tcp.TcpCommandServer
+Terminal 2: java -cp out tcp.TcpCommandClient localhost 5000
+Gõ: PING / UPPER xin chào / TIME / ABC / QUIT

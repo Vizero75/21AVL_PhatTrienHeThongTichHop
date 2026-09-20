@@ -1,0 +1,7 @@
+Lab 4.1 - HostInspector
+
+cd C:\Users\Ledin\Downloads\Lab04\4.1_HostInspector
+javac -encoding UTF-8 -d out src/network/HostInspector.java
+java -cp out network.HostInspector localhost
+java -cp out network.HostInspector example.com
+java -cp out network.HostInspector host-khong-ton-tai.invalid
