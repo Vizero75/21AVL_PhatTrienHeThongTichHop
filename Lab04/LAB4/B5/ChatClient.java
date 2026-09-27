@@ -21,7 +21,6 @@ public class ChatClient {
 
             System.out.println("Đã kết nối tới Chat Server (" + host + ":" + port + ").");
 
-            // Luồng phụ: Liên tục lắng nghe tin nhắn từ Server và in ra Console
             Thread listenerThread = new Thread(() -> {
                 try {
                     String serverMsg;
@@ -35,7 +34,6 @@ public class ChatClient {
             listenerThread.setDaemon(true);
             listenerThread.start();
 
-            // Luồng chính: Đọc dữ liệu người dùng nhập từ bàn phím và gửi lên Server
             String userInput;
             while ((userInput = console.readLine()) != null) {
                 out.println(userInput);
