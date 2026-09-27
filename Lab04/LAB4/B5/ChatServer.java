@@ -17,7 +17,6 @@ public class ChatServer {
     private static final int PORT = 5000;
     private static final int MAX_CLIENTS = 50;
 
-    // Lưu danh sách client online (nickname -> PrintWriter) dạng thread-safe
     private static final Map clients = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
@@ -35,8 +34,6 @@ public class ChatServer {
             pool.shutdown();
         }
     }
-
-    // Phương thức gửi tin nhắn tới tất cả client (hoặc trừ người gửi)
     public static void broadcast(String message, String excludeUser) {
         for (Object key : clients.keySet()) {
             String user = String.valueOf(key);
