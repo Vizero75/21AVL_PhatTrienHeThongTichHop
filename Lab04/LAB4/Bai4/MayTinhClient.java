@@ -8,10 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-// Client máy tính từ xa: đọc lệnh từ bàn phím, gửi lên server và in kết quả
 public class MayTinhClient {
     public static void main(String[] args) {
-        // Tham số tùy chọn: host (mặc định localhost) và port (mặc định 5000)
         String host = args.length > 0 ? args[0] : "localhost";
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 5000;
 
@@ -29,9 +27,9 @@ public class MayTinhClient {
 
             String line;
             while ((line = keyboard.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;        // bỏ qua dòng trống
-                out.println(line);                          // gửi lệnh lên server
-                String reply = in.readLine();               // chờ server trả lời
+                if (line.trim().isEmpty()) continue;        
+                out.println(line);                          
+                String reply = in.readLine();               
                 if (reply == null) {
                     System.out.println("Server đã ngắt kết nối");
                     break;
