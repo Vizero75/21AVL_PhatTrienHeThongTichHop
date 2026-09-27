@@ -11,28 +11,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// Server máy tính từ xa: nhận lệnh "CALC <toán tử> <số 1> <số 2>" qua TCP và trả kết quả
 public class MayTinhServer {
-    private static final int PORT = 5000;        // cổng server lắng nghe
-    private static final int MAX_CLIENTS = 10;   // số client phục vụ cùng lúc tối đa
+    private static final int PORT = 5000;        
+    private static final int MAX_CLIENTS = 10;   
 
     public static void main(String[] args) {
-        // Tạo pool 10 luồng, mỗi client được xử lý trên một luồng riêng
         ExecutorService pool = Executors.newFixedThreadPool(MAX_CLIENTS);
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Máy tính Server đang nghe trên cổng " + PORT + "...");
             while (true) {
-                Socket client = serverSocket.accept();      // chờ client kết nối
-                pool.submit(() -> handleClient(client));    // giao client cho một luồng xử lý
+                Socket client = serverSocket.accept();    
+                pool.submit(() -> handleClient(client));    
             }
         } catch (IOException e) {
             System.out.println("Lỗi server: " + e.getMessage());
         } finally {
-            pool.shutdown();                                // đóng pool khi server dừng
+            pool.shutdown();                            
         }
     }
 
-    // Xử lý một client: đọc từng dòng lệnh, tính toán và gửi kết quả về
     private static void handleClient(Socket socket) {
         String addr = socket.getRemoteSocketAddress().toString();
         System.out.println("Client đã kết nối: " + addr);
@@ -44,11 +41,11 @@ public class MayTinhServer {
             String line;
             while ((line = in.readLine()) != null) {
                 String cmd = line.trim();
-                if (cmd.equalsIgnoreCase("QUIT")) {         // client muốn thoát
+                if (cmd.equalsIgnoreCase("QUIT")) {       
                     out.println("OK BYE");
                     break;
                 }
-                out.println(calculate(cmd));                // tính và trả kết quả
+                out.println(calculate(cmd));              
             }
         } catch (IOException e) {
             System.out.println("Lỗi giao tiếp với " + addr + ": " + e.getMessage());
@@ -57,11 +54,11 @@ public class MayTinhServer {
         }
     }
 
-    // Phân tích lệnh "CALC op a b" và trả về "OK<kết quả>" hoặc mã lỗi "ERR ..."
+
     public static String calculate(String cmd) {
-        String[] parts = cmd.split("\\s+");                 // tách theo khoảng trắng
+        String[] parts = cmd.split("\\s+");                
         if (parts.length != 4 || !parts[0].equalsIgnoreCase("CALC")) {
-            return "ERR INVALID_FORMAT";                    // sai cú pháp
+            return "ERR INVALID_FORMAT";                 
         }
         String op = parts[1];
         double a, b;
@@ -69,20 +66,20 @@ public class MayTinhServer {
             a = Double.parseDouble(parts[2]);
             b = Double.parseDouble(parts[3]);
         } catch (NumberFormatException e) {
-            return "ERR INVALID_NUMBER";                    // không phải số
+            return "ERR INVALID_NUMBER";                    
         }
         switch (op) {
             case "+": return "OK" + formatResult(a + b);
             case "-": return "OK" + formatResult(a - b);
             case "*": return "OK" + formatResult(a * b);
             case "/":
-                if (b == 0) return "ERR DIVIDE_BY_ZERO";    // chia cho 0
+                if (b == 0) return "ERR DIVIDE_BY_ZERO";    
                 return "OK" + formatResult(a / b);
-            default:  return "ERR UNSUPPORTED_OPERATOR";    // toán tử không hỗ trợ
+            default:  return "ERR UNSUPPORTED_OPERATOR";    
         }
     }
 
-    // Nếu kết quả là số nguyên thì in không có ".0" (300 thay vì 300.0)
+  
     private static String formatResult(double v) {
         if (v == (long) v) return String.format("%d", (long) v);
         return String.valueOf(v);
